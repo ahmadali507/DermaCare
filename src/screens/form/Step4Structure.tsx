@@ -14,7 +14,6 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useForm, Controller } from 'react-hook-form';
-import { Ionicons } from '@expo/vector-icons';
 import { RootStackParamList } from '../../navigation/types';
 import { Button } from '../../components/Button';
 import { Card } from '../../components/Card';
@@ -22,19 +21,27 @@ import { ProgressBar } from '../../components/ProgressBar';
 import { useFormStore } from '../../store/useFormStore';
 import { StructureData } from '../../types/form.types';
 import { Colors, Typography, Spacing, BorderRadius } from '../../constants/theme';
+import {
+    JawlineDefined,
+    JawlineModerate,
+    JawlineSoft,
+    ChinProminent,
+    ChinBalanced,
+    ChinRecessed,
+} from '../../components/icons/FacialIcons';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'FormStep4'>;
 
 const jawlineTypes = [
-    { label: 'Defined', description: 'Sharp, angular', icon: 'square-outline' as const },
-    { label: 'Moderate', description: 'Balanced', icon: 'scan-outline' as const },
-    { label: 'Soft', description: 'Rounded', icon: 'ellipse-outline' as const },
+    { label: 'Defined', description: 'Sharp, angular', Icon: JawlineDefined },
+    { label: 'Moderate', description: 'Balanced', Icon: JawlineModerate },
+    { label: 'Soft', description: 'Rounded', Icon: JawlineSoft },
 ];
 
 const chinShapes = [
-    { label: 'Prominent', description: 'Projecting', icon: 'arrow-forward-circle-outline' as const },
-    { label: 'Balanced', description: 'Proportional', icon: 'checkmark-circle-outline' as const },
-    { label: 'Recessed', description: 'Set back', icon: 'arrow-back-circle-outline' as const },
+    { label: 'Prominent', description: 'Projecting', Icon: ChinProminent },
+    { label: 'Balanced', description: 'Proportional', Icon: ChinBalanced },
+    { label: 'Recessed', description: 'Set back', Icon: ChinRecessed },
 ];
 
 const Step4Structure: React.FC = () => {
@@ -62,6 +69,7 @@ const Step4Structure: React.FC = () => {
                 <Text style={styles.heading}>Facial Structure Assessment</Text>
 
                 <Text style={styles.label}>Jawline Type</Text>
+                <Text style={styles.sublabel}>Select the profile that best matches yours.</Text>
                 <Controller
                     control={control}
                     name="jawlineType"
@@ -77,16 +85,10 @@ const Step4Structure: React.FC = () => {
                                     ]}
                                     onPress={() => onChange(type.label)}
                                 >
-                                    <View
-                                        style={[
-                                            styles.iconContainer,
-                                            value === type.label && styles.iconContainerActive,
-                                        ]}
-                                    >
-                                        <Ionicons
-                                            name={type.icon}
-                                            size={32}
-                                            color={value === type.label ? Colors.white : Colors.sageGreen}
+                                    <View style={styles.iconContainer}>
+                                        <type.Icon
+                                            size={80}
+                                            color={value === type.label ? Colors.sageGreen : Colors.mutedSage}
                                         />
                                     </View>
                                     <Text
@@ -97,7 +99,6 @@ const Step4Structure: React.FC = () => {
                                     >
                                         {type.label}
                                     </Text>
-                                    <Text style={styles.selectionDescription}>{type.description}</Text>
 
                                     <View style={[styles.radio, value === type.label && styles.radioActive]}>
                                         {value === type.label && <View style={styles.radioDot} />}
@@ -109,6 +110,7 @@ const Step4Structure: React.FC = () => {
                 />
 
                 <Text style={styles.label}>Chin Shape</Text>
+                <Text style={styles.sublabel}>Identify your chin profile.</Text>
                 <Controller
                     control={control}
                     name="chinShape"
@@ -124,16 +126,10 @@ const Step4Structure: React.FC = () => {
                                     ]}
                                     onPress={() => onChange(shape.label)}
                                 >
-                                    <View
-                                        style={[
-                                            styles.iconContainer,
-                                            value === shape.label && styles.iconContainerActive,
-                                        ]}
-                                    >
-                                        <Ionicons
-                                            name={shape.icon}
-                                            size={32}
-                                            color={value === shape.label ? Colors.white : Colors.sageGreen}
+                                    <View style={styles.iconContainer}>
+                                        <shape.Icon
+                                            size={80}
+                                            color={value === shape.label ? Colors.sageGreen : Colors.mutedSage}
                                         />
                                     </View>
                                     <Text
@@ -144,7 +140,6 @@ const Step4Structure: React.FC = () => {
                                     >
                                         {shape.label}
                                     </Text>
-                                    <Text style={styles.selectionDescription}>{shape.description}</Text>
 
                                     <View style={[styles.radio, value === shape.label && styles.radioActive]}>
                                         {value === shape.label && <View style={styles.radioDot} />}
@@ -157,9 +152,9 @@ const Step4Structure: React.FC = () => {
 
                 <Card style={styles.symmetryCard}>
                     <View style={styles.toggleRow}>
-                        <View>
+                        <View style={styles.toggleTextContainer}>
                             <Text style={styles.toggleTitle}>Facial Symmetry</Text>
-                            <Text style={styles.toggleSubtitle}>Do you notice facial symmetry?</Text>
+                            <Text style={styles.toggleSubtitle}>Is the facial structure generally symmetrical?</Text>
                         </View>
                         <Controller
                             control={control}
@@ -183,8 +178,11 @@ const Step4Structure: React.FC = () => {
                 <View style={styles.buttonRow}>
                     <Button
                         title="Back"
-                        variant="outline"
-                        onPress={() => navigation.goBack()}
+                        variant="primary"
+                        onPress={() => navigation
+
+
+                            .goBack()}
                         style={styles.backButton}
                     />
                     <Button
@@ -213,9 +211,14 @@ const styles = StyleSheet.create({
     },
     label: {
         ...Typography.h3,
-        fontSize: 16,
-        marginBottom: Spacing.md,
+        fontSize: 18,
+        marginBottom: Spacing.xs,
         marginTop: Spacing.lg,
+    },
+    sublabel: {
+        ...Typography.body,
+        color: Colors.mutedSage,
+        marginBottom: Spacing.md,
     },
     grid: {
         flexDirection: 'row',
@@ -230,43 +233,32 @@ const styles = StyleSheet.create({
         borderColor: Colors.border,
         alignItems: 'center',
         paddingVertical: Spacing.lg,
+        justifyContent: 'space-between',
+        minHeight: 160,
     },
     selectionCardActive: {
         borderColor: Colors.sageGreen,
         backgroundColor: `${Colors.sageGreen}05`,
     },
     iconContainer: {
-        width: 48,
-        height: 48,
-        borderRadius: 24,
-        backgroundColor: `${Colors.sageGreen}10`,
+        marginBottom: Spacing.sm,
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: Spacing.md,
-    },
-    iconContainerActive: {
-        backgroundColor: Colors.sageGreen,
     },
     selectionTitle: {
         ...Typography.body,
         fontWeight: '600',
-        marginBottom: Spacing.xs,
+        marginBottom: Spacing.md,
         fontSize: 14,
+        textAlign: 'center',
     },
     selectionTitleActive: {
         color: Colors.sageGreen,
     },
-    selectionDescription: {
-        ...Typography.caption,
-        color: Colors.mutedSage,
-        textAlign: 'center',
-        fontSize: 10,
-        marginBottom: Spacing.md,
-    },
     radio: {
-        width: 16,
-        height: 16,
-        borderRadius: 8,
+        width: 20,
+        height: 20,
+        borderRadius: 10,
         borderWidth: 1,
         borderColor: Colors.border,
         alignItems: 'center',
@@ -276,18 +268,23 @@ const styles = StyleSheet.create({
         borderColor: Colors.sageGreen,
     },
     radioDot: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
+        width: 10,
+        height: 10,
+        borderRadius: 5,
         backgroundColor: Colors.sageGreen,
     },
     symmetryCard: {
         marginTop: Spacing.xl,
+        paddingVertical: Spacing.lg,
     },
     toggleRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+    },
+    toggleTextContainer: {
+        flex: 1,
+        paddingRight: Spacing.md,
     },
     toggleTitle: {
         ...Typography.h3,
@@ -297,6 +294,7 @@ const styles = StyleSheet.create({
     toggleSubtitle: {
         ...Typography.caption,
         color: Colors.mutedSage,
+        lineHeight: 18,
     },
     switchContainer: {
         flexDirection: 'row',

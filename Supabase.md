@@ -10,12 +10,13 @@
 ### 2025-12-24: Initial Setup & Migration
 - **Action**: Initialized Supabase project structure.
 - **Action**: Created initial schema migration `20250124000001_initial_schema.sql`.
-    - Included tables: `profiles`, `skin_assessments`, `curated_plans`, `daily_routines`, `progress_logs`.
-    - Enabled RLS on all tables.
-    - Added seed data for curated plans.
 - **Action**: Configured environment variables.
-- **Action**: Linking project and pushing migrations via CLI.
+- **Attempt**: Link project via CLI.
+    - **Status**: Failed (Missing Access Token).
+- **Action**: Retrying migration push using direct DB URL.
+    - **Command**: `npx supabase db push --db-url ...`
+    - **Status**: Success ✅
+    - **Outcome**: Tables created, RLS policies applied.
 
 ## Pending Actions
-- [ ] Verify migration success on remote database.
 - [ ] Generate types from remote database (optional, since we have local types).
